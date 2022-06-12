@@ -3,6 +3,8 @@ import Grid from './grid'
 import PlayerInfo from './components/player-info/playerInfo';
 import Header from './components/header/Header';
 
+import { checkForColumnOfFour, checkForRowOfFour, checkForLeftDiagonal, checkForRightDiagonal } from './components/checkwinner';
+
 import styles from './app.module.css';
 
 const { container } = styles;
@@ -17,43 +19,16 @@ const App = () => {
         positions: new Array(42).fill(null)
     });
 
-    const checkForColumnOfFour = (index) => {
-        for (let i = 0; i < 21; i++) {
-            const columnOfFour = [i, i + 7, i + 7 * 2, i + 7 * 3]
-
-            if (columnOfFour.every(square => data.positions[square] === data.positions[index])) {
-                console.log('good');
-
-                data.winner.name = data.positions[index]
-                data.winner.indexes = columnOfFour
-            }
-        }
-    }
-
-    const checkForRowOfFour = (index) => {
-        for (let i = 0; i < 41; i++) {
-            const rowOfFour = [i, i + 1, i + 2, i + 3]
-
-            const notValid = [4, 5, 6, 11, 12, 13, 18, 19, 20, 25, 26, 27, 32, 33, 34, 39, 40, 41]
-
-            if (notValid.includes(i)) continue
-
-            if (rowOfFour.every(square => data.positions[square] === data.positions[index])) {
-
-                data.winner.name = data.positions[index]
-                data.winner.indexes = rowOfFour
-            }
-        }
-    }
-
     const onChange = (index) => {
         setData(prevData => {
             if (!prevData.positions[index] && !prevData.winner.name) {
                 const data = { ...prevData }
                 data.positions[index] = data.turn
 
-                checkForColumnOfFour(index);
-                checkForRowOfFour(index);
+                checkForColumnOfFour(index, data);
+                checkForRowOfFour(index, data);
+                checkForLeftDiagonal(index, data);
+                checkForRightDiagonal(index, data);
 
                 data.turn = (data.turn === 'YCricle') ? 'RCricle' : 'YCricle'
                 return data

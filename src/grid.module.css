@@ -2,7 +2,7 @@
     display: grid;
     grid: 85px 85px 85px 85px 85px 85px / 85px 85px 85px 85px 85px 85px 85px;
     gap: 3px;
-    margin: 50px auto;
+    margin: 25px auto;
 }
 
 .container>div {
